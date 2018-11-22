@@ -49,54 +49,32 @@ temp2 = Theta2';
 Theta1_sum = sum( (temp1( 2:(input_layer_size + 1),: ) .^ 2)(:) );
 Theta2_sum = sum( (temp2( 2:(hidden_layer_size + 1),: ) .^ 2)(:) );
 
-%Theta1_sum
-%Theta2_sum
-
-%pause;
 J = J + ( ( lambda/( 2 * m ) ) * ( Theta1_sum + Theta2_sum ) );
 
 Delta3 = zeros(num_labels,m);
 for c1 =1:num_labels,
-pause;
 Delta3(c1,:) = h(:,c1) - (y==c1);
 end;
-size(Delta3)
 
 Delta2 = zeros(hidden_layer_size,m);
 Delta2 = (Theta2' * Delta3) .* (a1') .* ( 1-a1'); 
+Delta2 = Delta2(2:(hidden_layer_size + 1),:);
 
-size(Delta2)
-
- 
 GDelta2 = Delta3 * a1;
 GDelta1 = Delta2 * X;
 
-x = size(Theta2,2)
-y = size(Theta1,1)
-c = size(Theta2,1)
- 
-GDelta1 = GDelta1(2:x,:);
+x = size(Theta2,2);
+y = size(Theta1,2);
+c = size(Theta2,2);
 
-lambda=1;
-pause;
+Theta1_grad(:,1) = (1/m) * GDelta1(:,1);
+Theta1_grad(:,2:y) = ( (1/m) * ( GDelta1(:,2:y) ) ) + ( (lambda/m) * ( Theta1(:,2:y) ) ) ;
 
-GDelta1(2:y,:)
-pause;
-
-Theta1_grad(1,:) = (1/m) * GDelta1(1,:);
-Theta1_grad(2:y,:) = (1/m) * ( (lambda/m) * ( GDelta1(2:y,:) ) ) ;
+Theta2_grad(:,1) = (1/m) * GDelta2(:,1);
+Theta2_grad(:,2:c) = ( (1/m) * ( GDelta2(:,2:c) ) ) + ( (lambda/m) * ( Theta2(:,2:c)) ) ;
 
 
-Theta2_grad(1,:) = (1/m) * GDelta2(1,:);
-Theta2_grad(2:c,:) = (1/m) * ( (lambda/m) * ( GDelta2(2:c,:) ) ) ;
 
-GDelta1;
-GDelta2;
-
-pause;
-
-Theta1_grad
-Theta2_grad
 
 
 
